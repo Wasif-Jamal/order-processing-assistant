@@ -1,14 +1,10 @@
 """Database configuration."""
 
 from sqlalchemy import create_engine
-from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, Session
 
 from app.config.env_config import settings
-
-
-class Base(DeclarativeBase):
-    """Base class for all SQLAlchemy models."""
+from app.models.base import Base
 
 
 class DatabaseConfig:
@@ -29,7 +25,7 @@ class DatabaseConfig:
             expire_on_commit=False,
         )
 
-    def get_session(self):
+    def get_session(self) -> Session:
         """Return a new database session."""
         return self.session_factory()
 

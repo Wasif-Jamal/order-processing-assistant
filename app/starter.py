@@ -11,6 +11,7 @@ from fastapi import FastAPI
 from app.config.db_config import Base
 from app.config.db_config import database
 from app.config.log_config import config
+from app.utils.database.database_initializer import DatabaseInitializer
 
 logger = config.get_logger(__name__)
 
@@ -19,9 +20,12 @@ logger = config.get_logger(__name__)
 async def lifespan(app: FastAPI):
     """Initialize application resources."""
 
-    logger.info("Intializing resources")
+    logger.info("Intializing database")
 
-    logger.info("Resources initialized.")
+    initializer = DatabaseInitializer()
+    initializer.initialize()
+
+    logger.info("database initialized.")
 
     yield
 

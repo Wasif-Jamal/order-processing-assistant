@@ -16,9 +16,6 @@ from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
 
 from app.models.base import Base
-from app.models.customer import Customer
-from app.models.order_item import OrderItem
-from app.models.shipment import Shipment
 
 
 class Order(Base):
