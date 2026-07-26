@@ -38,15 +38,10 @@ class SqlAgent:
             retry_limit: Maximum SQL self-correction attempts.
         """
         self._retry_limit = (
-            retry_limit
-            if retry_limit is not None
-            else settings.sql_retry_limit
+            retry_limit if retry_limit is not None else settings.sql_retry_limit
         )
 
-        self._api_base_url = (
-            api_base_url
-            or settings.api_base_url
-        )
+        self._api_base_url = api_base_url or settings.api_base_url
 
         logger.info(
             "Initializing SqlAgent (retry_limit=%d)",

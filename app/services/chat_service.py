@@ -74,10 +74,7 @@ class ChatService:
 
             error_message: str | None = result.get("error_message")
 
-            if (
-                error_message is not None
-                and error_message not in _ALLOWED_ERRORS
-            ):
+            if error_message is not None and error_message not in _ALLOWED_ERRORS:
                 logger.warning(
                     "Unexpected error returned by workflow: %s",
                     error_message,

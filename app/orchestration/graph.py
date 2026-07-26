@@ -38,9 +38,7 @@ class WorkflowGraph:
         """
         self._llm = llm
         self._retry_limit = (
-            retry_limit
-            if retry_limit is not None
-            else settings.sql_retry_limit
+            retry_limit if retry_limit is not None else settings.sql_retry_limit
         )
 
         logger.info(

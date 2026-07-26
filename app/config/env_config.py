@@ -38,5 +38,40 @@ class Settings(BaseSettings):
         description="Application logging level.",
     )
 
+    qdrant_host: str = Field(
+        default="localhost",
+        description="Qdrant server host.",
+    )
+
+    qdrant_port: int = Field(
+        default=6333,
+        description="Qdrant server port.",
+    )
+
+    qdrant_api_key: str | None = Field(
+        default=None,
+        description="Qdrant API key for authentication.",
+    )
+
+    qdrant_url: str | None = Field(
+        default=None,
+        description="Qdrant server URL.",
+    )
+
+    qdrant_location: str | None = Field(
+        default=None,
+        description="Qdrant location (e.g., ':memory:' for local testing).",
+    )
+
+    embedding_model_name: str = Field(
+        default="sentence-transformers/all-MiniLM-L6-v2",
+        description="Name of the embedding model to use.",
+    )
+
+    vector_size: int = Field(
+        default=384,
+        description="Dimension size of generated vector embeddings.",
+    )
+
 
 settings = Settings()
