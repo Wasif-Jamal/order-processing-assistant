@@ -11,6 +11,10 @@ from fastapi import FastAPI
 from app.config.db_config import Base
 from app.config.db_config import database
 from app.config.log_config import config
+from app.orchestration import graph
+from app.routes.health_routes import HealthRouter
+from app.routes.chat_routes import ChatRouter
+from app.services.chat_service import ChatService
 from app.utils.database.database_initializer import DatabaseInitializer
 
 logger = config.get_logger(__name__)
@@ -26,6 +30,11 @@ async def lifespan(app: FastAPI):
     initializer.initialize()
 
     logger.info("database initialized.")
+
+    chat_service = ChatService(graph)
+    
+    app.include_router(ChatRouter(chat_service).router)
+    app.include_router(HealthRouter().router)
 
     yield
 
