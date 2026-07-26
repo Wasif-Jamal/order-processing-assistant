@@ -73,5 +73,10 @@ class Settings(BaseSettings):
         description="Dimension size of generated vector embeddings.",
     )
 
+    sql_cache_similarity_threshold: float = Field(
+        default=0.85,
+        description="Minimum vector similarity threshold for SQL cache hits.",
+    )
+
 
 settings = Settings()
