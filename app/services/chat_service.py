@@ -16,9 +16,9 @@ from langchain_core.messages import HumanMessage
 from langgraph.graph.state import CompiledStateGraph
 
 from app.config.log_config import config as log_config
-from app.schema.requests_schema import ChatRequest
-from app.schema.responses_schema import ChatResponse
-from app.schema.sql_result_schema import QueryResult
+from app.schemas.requests_schema import ChatRequest
+from app.schemas.responses_schema import ChatResponse
+from app.schemas.sql_result_schema import QueryResult
 
 logger = log_config.get_logger(__name__)
 

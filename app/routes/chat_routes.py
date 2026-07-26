@@ -8,8 +8,8 @@ application logic itself.
 from fastapi import APIRouter
 
 from app.config.log_config import config as log_config
-from app.schema.requests_schema import ChatRequest
-from app.schema.responses_schema import ChatResponse
+from app.schemas.requests_schema import ChatRequest
+from app.schemas.responses_schema import ChatResponse
 from app.services.chat_service import ChatService
 
 logger = log_config.get_logger(__name__)

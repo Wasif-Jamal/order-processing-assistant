@@ -10,7 +10,7 @@ from sqlalchemy import text
 
 from app.config.db_config import database
 from app.config.log_config import config as log_config
-from app.schema.sql_result_schema import QueryResult
+from app.schemas.sql_result_schema import QueryResult
 
 logger = log_config.get_logger(__name__)
 

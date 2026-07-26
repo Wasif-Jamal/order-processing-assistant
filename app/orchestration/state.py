@@ -11,7 +11,7 @@ from typing import Optional
 
 from langgraph.graph import MessagesState
 
-from app.schema.sql_result_schema import QueryResult
+from app.schemas.sql_result_schema import QueryResult
 
 
 class WorkflowState(MessagesState):

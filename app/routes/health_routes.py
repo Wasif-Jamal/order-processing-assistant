@@ -7,7 +7,7 @@ running.
 
 from fastapi import APIRouter
 
-from app.schema.responses_schema import HealthResponse
+from app.schemas.responses_schema import HealthResponse
 
 
 class HealthRouter:
