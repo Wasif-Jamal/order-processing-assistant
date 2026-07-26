@@ -22,8 +22,9 @@ from app.models import Order
 from app.models import OrderItem
 from app.models import Product
 from app.models import Shipment
-from app.models.base import Base
-from app.utils.database.validators import CSVValidator
+from app.models import SQLTemplate
+from app.models.base_model import Base
+from app.utils.database.csv_validator import CSVValidator
 
 logger = config.get_logger(__name__)
 
@@ -36,7 +37,6 @@ class DatabaseInitializer:
     - Creating all database tables.
     - Loading the Superstore CSV.
     - Normalizing the dataset.
-    - Validating records using Pydantic schemas.
     - Inserting records into the database.
     - Ensuring initialization only happens once.
     """
@@ -75,14 +75,22 @@ class DatabaseInitializer:
             return
 
         with self._session_factory() as session:
-            dataframe = self._read_csv()
-            validator = CSVValidator()
+            try:
+                dataframe = self._read_csv()
 
-            if not validator.validate(dataframe):
-                raise ValueError("CSV validation failed.")
-            self._load_csv(session, dataframe)
+                validator = CSVValidator()
 
-        logger.info("Database initialization completed successfully.")
+                if not validator.validate(dataframe):
+                    raise ValueError("CSV validation failed.")
+
+                self._load_csv(session, dataframe)
+
+            except Exception:
+                session.rollback()
+                logger.exception("Database initialization failed.")
+                raise
+
+                logger.info("Database initialization completed successfully.")
 
     def _create_tables(self) -> None:
         """Create all database tables.

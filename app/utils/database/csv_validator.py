@@ -1,9 +1,8 @@
 """CSV validation utilities.
 
-Validates the structure of the Superstore CSV before it is loaded into the
+Validates the source dataset before it is transformed and loaded into the
 database. The validator ensures that all required columns are present and that
-the CSV contains data. This validation is performed once during application
-startup before the database is seeded.
+the dataset is not empty.
 """
 
 from pandas import DataFrame

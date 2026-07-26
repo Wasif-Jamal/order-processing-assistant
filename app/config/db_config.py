@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 
 from app.config.env_config import settings
-from app.models.base import Base
+from app.models.base_model import Base
 
 
 class DatabaseConfig:

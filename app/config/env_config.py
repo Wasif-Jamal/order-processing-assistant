@@ -28,6 +28,11 @@ class Settings(BaseSettings):
         description="Path to the Superstore CSV file.",
     )
 
+    sql_dialect: str = Field(
+        default="tsql",
+        description="SQL Dialect.",
+    )
+
     log_level: str = Field(
         default="INFO",
         description="Application logging level.",
