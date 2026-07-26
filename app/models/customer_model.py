@@ -10,7 +10,7 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
 
-from app.models.base import Base
+from app.models.base_model import Base
 
 
 class Customer(Base):
