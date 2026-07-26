@@ -16,6 +16,7 @@ from app.routes.health_routes import HealthRouter
 from app.routes.chat_routes import ChatRouter
 from app.services.chat_service import ChatService
 from app.utils.database.database_initializer import DatabaseInitializer
+from app.utils.database.knowledge_base_initializer import KnowledgeBaseInitializer
 
 logger = config.get_logger(__name__)
 
@@ -24,15 +25,20 @@ logger = config.get_logger(__name__)
 async def lifespan(app: FastAPI):
     """Initialize application resources."""
 
-    logger.info("Intializing database")
+    logger.info("Initializing database")
 
     initializer = DatabaseInitializer()
     initializer.initialize()
 
-    logger.info("database initialized.")
+    logger.info("Database initialized.")
+
+    logger.info("Initializing Knowledge Base vector store.")
+    kb_initializer = KnowledgeBaseInitializer()
+    kb_initializer.initialize()
+    logger.info("Knowledge Base initialized.")
 
     chat_service = ChatService(graph)
-    
+
     app.include_router(ChatRouter(chat_service).router)
     app.include_router(HealthRouter().router)
 

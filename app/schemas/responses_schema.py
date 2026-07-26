@@ -28,9 +28,7 @@ class ChatResponse(BaseModel):
 
     question: str
     generated_sql: Optional[str] = None
-    sql_source: Optional[
-        Literal["cache", "template", "generated"]
-    ] = None
+    sql_source: Optional[Literal["cache", "template", "generated"]] = None
     sql_explanation: Optional[str] = None
     query_result: Optional[list[dict]] = None
     columns: Optional[list[str]] = None
