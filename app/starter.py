@@ -17,6 +17,7 @@ from app.routes.chat_routes import ChatRouter
 from app.services.chat_service import ChatService
 from app.utils.database.database_initializer import DatabaseInitializer
 from app.utils.database.knowledge_base_initializer import KnowledgeBaseInitializer
+from app.utils.database.sql_template_initializer import SQLTemplateInitializer
 
 logger = config.get_logger(__name__)
 
@@ -36,6 +37,11 @@ async def lifespan(app: FastAPI):
     kb_initializer = KnowledgeBaseInitializer()
     kb_initializer.initialize()
     logger.info("Knowledge Base initialized.")
+
+    logger.info("Initializing SQL Templates vector repository.")
+    template_initializer = SQLTemplateInitializer()
+    template_initializer.initialize()
+    logger.info("SQL Templates initialized.")
 
     chat_service = ChatService(graph)
 

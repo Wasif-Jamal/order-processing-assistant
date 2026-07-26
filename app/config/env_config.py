@@ -78,5 +78,10 @@ class Settings(BaseSettings):
         description="Minimum vector similarity threshold for SQL cache hits.",
     )
 
+    sql_template_similarity_threshold: float = Field(
+        default=0.70,
+        description="Minimum vector similarity threshold for SQL template search hits.",
+    )
+
 
 settings = Settings()

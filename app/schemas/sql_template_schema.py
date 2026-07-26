@@ -41,9 +41,19 @@ class SQLTemplateSchema(BaseModel):
         description="Human-readable description of the SQL template.",
     )
 
+    natural_language_examples: str | None = Field(
+        default=None,
+        description="Natural language example questions matching the template.",
+    )
+
     sql_query: str = Field(
         ...,
         description="Validated SQL query.",
+    )
+
+    sql_explanation: str | None = Field(
+        default=None,
+        description="Optional human-readable explanation of the SQL query logic.",
     )
 
     parameters: str | None = Field(

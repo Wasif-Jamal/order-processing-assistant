@@ -47,9 +47,21 @@ class SQLTemplate(Base):
         nullable=False,
     )
 
+    natural_language_examples: Mapped[str | None] = mapped_column(
+        Text,
+        nullable=True,
+        doc="Natural language sample questions matching the template.",
+    )
+
     sql_query: Mapped[str] = mapped_column(
         Text,
         nullable=False,
+    )
+
+    sql_explanation: Mapped[str | None] = mapped_column(
+        Text,
+        nullable=True,
+        doc="Explanation of the template SELECT logic.",
     )
 
     parameters: Mapped[str | None] = mapped_column(
