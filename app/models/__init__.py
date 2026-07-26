@@ -5,3 +5,4 @@ from app.models.order_model import Order
 from app.models.order_item_model import OrderItem
 from app.models.shipment_model import Shipment
 from app.models.sql_template_model import SQLTemplate
+from app.models.sql_cache_model import SQLCache
