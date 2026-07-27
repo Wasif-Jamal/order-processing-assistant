@@ -1,9 +1,10 @@
 """Intent Agent.
 
 The IntentAgent is the first node in the Order Processing Assistant workflow.
-It receives the user's natural-language question, identifies the business
-intent, extracts entities, determines whether additional information is
-required, and stores the results in the shared WorkflowState.
+It receives the user's natural-language question together with the recent
+conversation history, identifies the business intent, extracts entities,
+determines whether additional information is required, and stores the results
+in the shared WorkflowState.
 
 The agent never generates SQL or executes database queries.
 """
@@ -25,12 +26,7 @@ logger = log_config.get_logger(__name__)
 
 
 class IntentAgent:
-    """Detects user intent and extracts business entities.
-
-    This is the first LangGraph node in the workflow. It classifies the user's
-    request, extracts relevant entities, determines whether all required
-    parameters are available, and updates the workflow state.
-    """
+    """Detects user intent and extracts business entities."""
 
     def __init__(
         self,
@@ -49,7 +45,10 @@ class IntentAgent:
 
         self._prompt = PromptTemplate(
             template=INTENT_PROMPT_TEMPLATE,
-            input_variables=["user_query"],
+            input_variables=[
+                "conversation_history",
+                "user_query",
+            ],
             partial_variables={
                 "format_instructions": self._parser.get_format_instructions(),
             },
@@ -62,11 +61,13 @@ class IntentAgent:
     def analyze(
         self,
         user_query: str,
+        conversation_history: str,
     ) -> IntentResult:
         """Analyze a natural-language query.
 
         Args:
-            user_query: User's question.
+            user_query: Current user question.
+            conversation_history: Previous conversation for the session.
 
         Returns:
             Structured intent detection result.
@@ -75,6 +76,7 @@ class IntentAgent:
 
         raw_result = self._chain.invoke(
             {
+                "conversation_history": conversation_history,
                 "user_query": user_query,
             }
         )
@@ -95,8 +97,9 @@ class IntentAgent:
     ) -> dict[str, Any]:
         """LangGraph node.
 
-        Reads the user's question from the workflow state, performs intent
-        detection, and writes the extracted information back into the state.
+        Reads the user's question and conversation history from the workflow
+        state, performs intent detection, and writes the extracted information
+        back into the state.
 
         Args:
             state: Current workflow state.
@@ -106,7 +109,16 @@ class IntentAgent:
         """
         logger.info("Running IntentAgent node.")
 
-        result = self.analyze(state["question"])
+        history = state.get("conversation_history", [])
+
+        history_text = "\n".join(
+            f"{message.type.upper()}: {message.content}" for message in history
+        )
+
+        result = self.analyze(
+            user_query=state["question"],
+            conversation_history=history_text,
+        )
 
         logger.info("IntentAgent completed.")
 

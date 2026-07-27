@@ -106,9 +106,7 @@ Return ONLY the SQL query.
             # Remove markdown fences if present.
             if sql.startswith("```"):
                 lines = [
-                    line
-                    for line in sql.splitlines()
-                    if not line.startswith("```")
+                    line for line in sql.splitlines() if not line.startswith("```")
                 ]
                 sql = "\n".join(lines).strip()
 

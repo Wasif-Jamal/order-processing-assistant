@@ -94,5 +94,5 @@ class TemplateTools:
                     ],
                 }
             )
-        
+
         self.retrieve_sql_template = retrieve_sql_template

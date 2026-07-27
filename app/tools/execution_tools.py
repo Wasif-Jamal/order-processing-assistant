@@ -106,5 +106,5 @@ class ExecutionTools:
                         ],
                     }
                 )
-            
+
         self.execute_sql = execute_sql

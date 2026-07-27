@@ -135,6 +135,6 @@ class CacheTools:
             except Exception:
                 logger.exception("Unable to save SQL cache.")
                 return "SAVE_FAILED"
-            
+
         self.retrieve_cached_sql = retrieve_cached_sql
         self.save_sql_cache = save_sql_cache
