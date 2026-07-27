@@ -89,7 +89,7 @@ class Settings(BaseSettings):
     )
 
     model_name: str = Field(
-        default="gemini-2.5-flash",
+        default="gemini-3.1-flash-lite",
         description="Gemini model used by the application.",
     )
 
@@ -102,6 +102,9 @@ class Settings(BaseSettings):
         default=3,
         description="Maximum SQL self-correction attempts.",
     )
+
+    langchain_verbose: bool = False
+    langchain_debug: bool = False
 
 
 settings = Settings()

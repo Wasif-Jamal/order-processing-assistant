@@ -3,7 +3,7 @@
 The workflow consists of three sequential agents:
 
 1. IntentAgent
-2. SqlAgent
+2. SqlAgent (create_agent() subgraph)
 3. ResponseAgent
 
 After the IntentAgent completes, the graph checks whether additional user
@@ -13,8 +13,7 @@ through SQL execution and response generation.
 """
 
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langgraph.graph import END
-from langgraph.graph import StateGraph
+from langgraph.graph import END, StateGraph
 from langgraph.graph.state import CompiledStateGraph
 
 from app.agents.intent_agent import IntentAgent
@@ -32,17 +31,8 @@ logger = log_config.get_logger(__name__)
 
 
 def _route_after_intent(state: WorkflowState) -> str:
-    """Route the workflow after intent detection.
+    """Route the workflow after IntentAgent."""
 
-    If required parameters are missing, terminate the workflow so the API can
-    return a clarification request. Otherwise continue to SQL processing.
-
-    Args:
-        state: Current workflow state.
-
-    Returns:
-        Next node name or END.
-    """
     if state.get("missing_parameters"):
         logger.info("IntentAgent requested additional user information.")
         return END
@@ -62,11 +52,6 @@ class OrderProcessingGraph:
         knowledge_base_service: KnowledgeBaseService,
         database_service: DatabaseService,
     ) -> None:
-        """Initialize the workflow builder.
-
-        Args:
-            llm: Shared language model used by all agents.
-        """
         self._llm = llm
         self._sql_cache_service = sql_cache_service
         self._sql_template_service = sql_template_service
@@ -79,6 +64,7 @@ class OrderProcessingGraph:
         logger.info("Building workflow graph.")
 
         intent_agent = IntentAgent(self._llm)
+
         sql_agent = SqlAgent(
             llm=self._llm,
             sql_cache_service=self._sql_cache_service,
@@ -86,6 +72,7 @@ class OrderProcessingGraph:
             knowledge_base_service=self._knowledge_base_service,
             database_service=self._database_service,
         )
+
         response_agent = ResponseAgent(self._llm)
 
         builder = StateGraph(WorkflowState)
@@ -95,9 +82,10 @@ class OrderProcessingGraph:
             intent_agent.node,
         )
 
+        # SQL Agent is itself a compiled create_agent() graph
         builder.add_node(
             "sql_agent",
-            sql_agent.node,
+            sql_agent._agent,
         )
 
         builder.add_node(
