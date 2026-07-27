@@ -36,7 +36,7 @@ class KnowledgeBaseService:
         self,
         question: str,
         limit: int = 5,
-    ) -> list[KnowledgeBaseSchema]:
+    ) -> str:
         """Search for schema metadata relevant to a natural language question.
 
         Args:
@@ -73,7 +73,10 @@ class KnowledgeBaseService:
                     exc,
                 )
 
-        return schemas
+        return "\n\n".join(
+            schema.to_embedding_text()
+            for schema in schemas
+        )
 
     def retrieve_relevant_tables(
         self,
