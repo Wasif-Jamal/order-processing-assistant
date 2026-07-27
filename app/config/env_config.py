@@ -83,5 +83,25 @@ class Settings(BaseSettings):
         description="Minimum vector similarity threshold for SQL template search hits.",
     )
 
+    google_api_key: str = Field(
+        default="",
+        description="Google AI Studio API key.",
+    )
+
+    model_name: str = Field(
+        default="gemini-2.5-flash",
+        description="Gemini model used by the application.",
+    )
+
+    temperature: float = Field(
+        default=0.0,
+        description="LLM temperature.",
+    )
+
+    sql_retry_limit: int = Field(
+        default=3,
+        description="Maximum SQL self-correction attempts.",
+    )
+
 
 settings = Settings()
