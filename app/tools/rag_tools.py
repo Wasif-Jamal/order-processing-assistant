@@ -58,9 +58,7 @@ class RagTools:
             Returns:
                 Command updating the workflow state.
             """
-            logger.info(
-                "Searching Knowledge Base for schema context."
-            )
+            logger.info("Searching Knowledge Base for schema context.")
 
             schema_context = self._knowledge_base_service.search_schema(
                 question=question,
@@ -68,9 +66,7 @@ class RagTools:
             )
 
             if not schema_context:
-                logger.warning(
-                    "No schema context found."
-                )
+                logger.warning("No schema context found.")
 
                 return Command(
                     update={
@@ -100,5 +96,5 @@ class RagTools:
                     ],
                 }
             )
-        
+
         self.retrieve_schema = retrieve_schema

@@ -15,6 +15,7 @@ from app.orchestration.graph import OrderProcessingGraph
 from app.routes.chat_routes import ChatRouter
 from app.routes.health_routes import HealthRouter
 from app.services.chat_service import ChatService
+from app.services.conversation_service import ConversationService
 from app.utils.database.database_initializer import DatabaseInitializer
 from app.utils.database.knowledge_base_initializer import (
     KnowledgeBaseInitializer,
@@ -88,7 +89,11 @@ def create_app() -> FastAPI:
         database_service=database_service,
     ).build()
 
-    chat_service = ChatService(workflow)
+    conversation_service = ConversationService()
+
+    chat_service = ChatService(
+        graph=workflow, conversation_service=conversation_service
+    )
 
     app.include_router(ChatRouter(chat_service).router)
     app.include_router(HealthRouter().router)

@@ -19,6 +19,7 @@ ResponseAgent
 from typing import Any
 
 from langgraph.graph import MessagesState
+from langchain_core.messages import BaseMessage
 
 from app.schemas.intent_schema import IntentEnum
 from app.schemas.sql_result_schema import QueryResult
@@ -119,3 +120,9 @@ class WorkflowState(MessagesState):
     # ------------------------------------------------------------------
 
     error_message: str | None = None
+
+    # ------------------------------------------------------------------
+    # Conversation history
+    # ------------------------------------------------------------------
+
+    conversation_history: list[BaseMessage]
