@@ -60,6 +60,11 @@ async def lifespan(app: FastAPI):
 def create_app() -> FastAPI:
     """Create and configure the FastAPI application."""
 
+    config.configure_langchain_logging(
+        verbose=settings.langchain_verbose,
+        debug=settings.langchain_debug,
+    )
+
     app = FastAPI(
         title="Order Processing Assistant",
         lifespan=lifespan,
