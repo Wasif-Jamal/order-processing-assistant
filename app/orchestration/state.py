@@ -106,6 +106,8 @@ class WorkflowState(MessagesState):
 
     query_result: QueryResult | None = None
 
+    validated_sql: str | None = None
+
     # ------------------------------------------------------------------
     # Response Agent
     # ------------------------------------------------------------------
