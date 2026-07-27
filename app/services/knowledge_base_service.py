@@ -73,10 +73,7 @@ class KnowledgeBaseService:
                     exc,
                 )
 
-        return "\n\n".join(
-            schema.to_embedding_text()
-            for schema in schemas
-        )
+        return "\n\n".join(schema.to_embedding_text() for schema in schemas)
 
     def retrieve_relevant_tables(
         self,

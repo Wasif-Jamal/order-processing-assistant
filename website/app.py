@@ -43,15 +43,11 @@ if "messages" not in st.session_state:
 # ---------------------------------------------------------------------
 
 for message in st.session_state.messages:
-
     with st.chat_message(message["role"]):
-
         st.markdown(message["content"])
 
         if message["role"] == "assistant":
-
             if message.get("generated_sql"):
-
                 with st.expander("Generated SQL"):
                     st.code(
                         message["generated_sql"],
@@ -59,15 +55,12 @@ for message in st.session_state.messages:
                     )
 
             if message.get("sql_source"):
-                st.caption(
-                    f"Source: **{message['sql_source']}**"
-                )
+                st.caption(f"Source: **{message['sql_source']}**")
 
             if message.get("sql_explanation"):
                 st.info(message["sql_explanation"])
 
             if message.get("query_result"):
-
                 df = pd.DataFrame(
                     message["query_result"],
                     columns=message.get("columns"),
@@ -78,9 +71,7 @@ for message in st.session_state.messages:
                     use_container_width=True,
                 )
 
-                st.caption(
-                    f"{message.get('row_count', len(df))} rows"
-                )
+                st.caption(f"{message.get('row_count', len(df))} rows")
 
             if message.get("error_message"):
                 st.error(message["error_message"])
@@ -90,7 +81,6 @@ for message in st.session_state.messages:
 # ---------------------------------------------------------------------
 
 if prompt := st.chat_input("Ask a question..."):
-
     st.session_state.messages.append(
         {
             "role": "user",
@@ -102,13 +92,10 @@ if prompt := st.chat_input("Ask a question..."):
         st.markdown(prompt)
 
     with st.chat_message("assistant"):
-
         placeholder = st.empty()
 
         with st.spinner("Thinking..."):
-
             try:
-
                 response = requests.post(
                     API_URL,
                     json={
@@ -121,7 +108,6 @@ if prompt := st.chat_input("Ask a question..."):
                 data = response.json()
 
             except Exception as ex:
-
                 placeholder.error(str(ex))
 
                 st.stop()
@@ -135,15 +121,11 @@ if prompt := st.chat_input("Ask a question..."):
             assistant_text = "Here are the results."
 
         else:
-            assistant_text = (
-                data.get("sql_explanation")
-                or "Done."
-            )
+            assistant_text = data.get("sql_explanation") or "Done."
 
         placeholder.markdown(assistant_text)
 
         if data.get("generated_sql"):
-
             with st.expander("Generated SQL"):
                 st.code(
                     data["generated_sql"],
@@ -151,15 +133,12 @@ if prompt := st.chat_input("Ask a question..."):
                 )
 
         if data.get("sql_source"):
-            st.caption(
-                f"Source: **{data['sql_source']}**"
-            )
+            st.caption(f"Source: **{data['sql_source']}**")
 
         if data.get("sql_explanation"):
             st.info(data["sql_explanation"])
 
         if data.get("query_result"):
-
             df = pd.DataFrame(
                 data["query_result"],
                 columns=data.get("columns"),
@@ -170,9 +149,7 @@ if prompt := st.chat_input("Ask a question..."):
                 use_container_width=True,
             )
 
-            st.caption(
-                f"{data.get('row_count', len(df))} rows"
-            )
+            st.caption(f"{data.get('row_count', len(df))} rows")
 
         if data.get("error_message"):
             st.error(data["error_message"])
